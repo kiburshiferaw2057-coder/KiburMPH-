@@ -239,7 +239,7 @@ class _BingoLobbyAndPaymentsScreenState
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.18),
+                        color: Colors.white.withOpacity(0.18),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -338,7 +338,7 @@ class _BingoLobbyAndPaymentsScreenState
                     ),
                     const SizedBox(height: 10),
                     DropdownButtonFormField<String>(
-                      initialValue: _selectedMethodLabel,
+                      value: _selectedMethodLabel,
                       items: AppConfig.paymentAccounts
                           .map(
                             (a) => DropdownMenuItem(
