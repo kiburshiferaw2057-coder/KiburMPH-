@@ -27,7 +27,7 @@ class AppTranslations {
       'cardsRange': 'Kaardii 1–600',
       'selectCards': 'Kaardii Gabatee Filadhaa',
       'selected': 'Filatame',
-      'maxCards': 'Marsaa tokkotti kaardii 10 ol filachuu hin danda'amu',
+      'maxCards': "Marsaa tokkotti kaardii 10 ol filachuu hin danda'amu",
       'accountHolder': 'Abbaa Herregaa',
       'holder': 'Abbaa',
       'copied': 'Garagalffameera',
@@ -36,7 +36,7 @@ class AppTranslations {
       'receiptNumber': 'Lakkoofsa Naxxantee / Wabii',
       'submitReceipt': 'Naxxantee Galchi',
       'invalidReceipt': 'Maaloo lakkoofsa naxxantee ykn wabii sirrii galchaa',
-      'receiptLogged': 'Naxxanteen galmaa'eera',
+      'receiptLogged': "Naxxanteen galmaa'eera",
     },
     AppLanguage.tigrigna: {
       'language': 'ቋንቋ',
