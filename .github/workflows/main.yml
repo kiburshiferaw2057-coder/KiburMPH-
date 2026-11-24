@@ -1,35 +1,51 @@
-name: Build BINGO ET APK
+name: Build Flutter Android APK
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
   build-apk:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        # Update 'android_flutter' to the folder containing pubspec.yaml, or '.' if pubspec.yaml is at the repo root
+        working-directory: android_flutter
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Verify project root and ensure MainActivity exists
+        shell: bash
+        run: |
+          pwd
+          ls -la
+          test -f pubspec.yaml || (echo "Error: pubspec.yaml not found in $(pwd)" && exit 1)
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: '17'
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.5'
-          channel: 'stable'
-          cache: true
+          channel: stable
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Regenerate Android files if MainActivity is missing
+        shell: bash
+        run: |
+          if ! find android/app/src/main -name "MainActivity.kt" -o -name "MainActivity.java" | grep -q .; then
+            echo "MainActivity not found; running flutter create --platforms=android ."
+            flutter create --platforms=android .
+          fi
 
       - name: Analyze project
         run: flutter analyze
@@ -40,5 +56,5 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BINGO-ET-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: app-release-apk
+          path: android_flutter/build/app/outputs/flutter-apk/app-release.apk
