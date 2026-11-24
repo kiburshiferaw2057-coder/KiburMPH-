@@ -1,0 +1,5 @@
+# Copy this file to android/key.properties (ignored by git) and fill in your keystore values
+storePassword=YOUR_STORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=bingo_et_key
+storeFile=../app/upload-keystore.jks
