@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>BINGO ET v3.0 — Web Portal & Clarification Hub</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand-group">
+        <img src="logo.png" alt="BINGO ET Logo" class="brand-logo" />
+        <div>
+          <h1 class="brand-title">BINGO ET <span class="ver-pill">v3.0</span></h1>
+          <p class="brand-sub" data-i18n="brandSub">Official Clarification & Payment Verification Portal</p>
+        </div>
+      </div>
+      <div class="status-group">
+        <label for="language-select" class="sr-only" data-i18n="langLabel">Language</label>
+        <select id="language-select" class="lang-select" aria-label="Language choice">
+          <option value="am">አማርኛ (Amharic)</option>
+          <option value="om">Afaan Oromoo (Afan Oromo)</option>
+          <option value="ti">ትግርኛ (Tigrigna)</option>
+          <option value="en">English</option>
+          <option value="ar">العربية (Arabic)</option>
+          <option value="other">Others</option>
+        </select>
+        <span class="chip chip-blue" id="round-timer-chip">Next Round: 02:00</span>
+        <a class="btn-outline" href="http://www.bingo1020.com" target="_blank" rel="noopener noreferrer">
+          bingo1020.com
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-grid">
+    <section class="panel" aria-labelledby="payments-heading">
+      <div class="panel-header">
+        <h2 id="payments-heading" data-i18n="paymentsHeading">Verified Payment Accounts & Receipt Check</h2>
+        <span class="badge-secure" data-i18n="badgeSecure">Security Hardened</span>
+      </div>
+
+      <div class="holder-banner">
+        <div>
+          <span class="meta-label" data-i18n="holderLabel">Account Holder Name</span>
+          <strong class="holder-name" id="holder-name-text">Kibur shiferaw kassa</strong>
+        </div>
+        <button type="button" class="btn-copy" data-copy="Kibur shiferaw kassa" data-label="Account Holder">
+          Copy Name
+        </button>
+      </div>
+
+      <div id="payment-cards" class="account-grid"></div>
+
+      <hr class="divider" />
+
+      <h3 data-i18n="receiptHeading">Receipt / Reference Verification</h3>
+      <p class="helper-text" data-i18n="receiptHelper">
+        Enter your transaction reference or receipt ID to log and check verification status.
+      </p>
+
+      <form id="receipt-form" class="receipt-form" novalidate>
+        <div class="form-row">
+          <label for="payment-select" data-i18n="channelLabel">Payment Channel</label>
+          <select id="payment-select" name="paymentSelect"></select>
+        </div>
+
+        <div class="form-row">
+          <label for="receipt-input" data-i18n="receiptInputLabel">Receipt / Transaction Reference</label>
+          <input
+            id="receipt-input"
+            name="receiptInput"
+            type="text"
+            maxlength="80"
+            autocomplete="off"
+            placeholder="e.g., FT26328XXXXX or TXN-984321"
+            required
+          />
+        </div>
+
+        <div class="form-row">
+          <label for="amount-input" data-i18n="amountLabel">Amount (Birr)</label>
+          <input
+            id="amount-input"
+            name="amountInput"
+            type="number"
+            min="1"
+            step="0.01"
+            placeholder="Enter Birr amount"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" data-i18n="verifyBtn">Verify & Log Receipt</button>
+          <button type="button" id="clear-history-btn" class="btn-ghost" data-i18n="clearHistoryBtn">Clear History</button>
+        </div>
+      </form>
+
+      <div id="receipt-feedback" class="feedback-box" role="status" aria-live="polite"></div>
+
+      <div class="history-section">
+        <h4 data-i18n="historyHeading">Recent Receipt Submissions</h4>
+        <ul id="receipt-history-list" class="history-list"></ul>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="clarification-heading">
+      <div class="panel-header">
+        <h2 id="clarification-heading" data-i18n="clarifyHeading">BINGO ET v3.0 Feature Clarifications</h2>
+        <span class="chip chip-soft" data-i18n="clarifyChip">2-Min Rounds • Cards 1–600</span>
+      </div>
+
+      <div class="clarify-list">
+        <article class="clarify-card">
+          <h3>1. Round Cadence & Countdown</h3>
+          <p>
+            New game rounds start on a structured <strong>2-minute (120-second)</strong> cycle. Minute countdown tracking is active while standalone alarm noise is kept silent/hidden.
+          </p>
+        </article>
+
+        <article class="clarify-card">
+          <h3>2. Board Card Selection (1 to 600)</h3>
+          <p>
+            Players can select game card numbers ranging from <strong>1 to 600</strong>, subject to active round availability and per-round card selection limits.
+          </p>
+        </article>
+
+        <article class="clarify-card">
+          <h3>3. Balance & Payment Display Rules</h3>
+          <p>
+            User balance remains visible in the interface. Payment/deposit views focus on <strong>Birr</strong> amounts while omitting/hiding percentage-based payment metrics (such as 80% payout ratio labels).
+          </p>
+        </article>
+
+        <article class="clarify-card">
+          <h3>4. Repository & Release Build Security</h3>
+          <p>
+            Release builds strip debug flags, enforce HTTPS-only network traffic, read signing credentials from GitHub Secrets or local <code>key.properties</code> (never committed), and generate signed release artifacts cleanly.
+          </p>
+        </article>
+      </div>
+
+      <div class="endpoint-box">
+        <h4 data-i18n="endpointsHeading">API Endpoints Reference</h4>
+        <ul class="endpoint-list">
+          <li><code>POST /api/user/login/v3</code></li>
+          <li><code>POST /api/user/reset/verify</code> &amp; <code>/complete</code></li>
+          <li><code>GET /api/banner/active</code></li>
+          <li><code>GET /api/withdraw-method/available</code></li>
+          <li><code>POST /api/transaction/withdraw/v2</code></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span><strong>BINGO ET v3.0</strong> — Account Holder: <strong>Kibur shiferaw kassa</strong></span>
+      <span>Reference Web: <a href="http://www.bingo1020.com" target="_blank" rel="noopener noreferrer">http://www.bingo1020.com</a></span>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
