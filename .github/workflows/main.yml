@@ -1,58 +1,44 @@
-name: Build BINGO-ET APK
+name: Build BINGO ET APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  verify-and-build:
-    name: verify-and-build
+  build-apk:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout full repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Set up JDK 17
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: '17'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.5'
+          channel: 'stable'
+          cache: true
 
-      - name: Accept Android SDK Licenses
-        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+      - name: Install dependencies
+        run: flutter pub get
 
-      - name: Verify project structure
-        run: |
-          echo "=== android/ contents ==="
-          ls -la android/
-          echo "=== src/ contents ==="
-          ls -la src/
-          test -f android/settings.gradle  test -f android/settings.gradle.kts  (echo "ERROR: settings.gradle missing in android/" && exit 1)
+      - name: Analyze project
+        run: flutter analyze
 
-      - name: Build Full Debug APK
-        run: |
-          cd android
-          gradle clean assembleDebug --stacktrace
+      - name: Build release APK
+        run: flutter build apk --release
 
-      - name: Verify APK contents
-        run: |
-          APK_PATH=$(find android -path "*/build/outputs/apk/debug/*.apk" | head -n 1)
-          echo "Built APK: $APK_PATH"
-          test -n "$APK_PATH" && test -f "$APK_PATH"
-          echo "APK_PATH=$APK_PATH" >> "$GITHUB_ENV"
-          unzip -l "$APK_PATH" | head -n 60
-
-      - name: Upload BINGO-ET APK Artifact
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BINGO-ET-APK
-          path: ${{ env.APK_PATH }}
-          if-no-files-found: error
+          name: BINGO-ET-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
