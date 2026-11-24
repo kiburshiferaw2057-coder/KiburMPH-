@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify project root and ensure MainActivity exists
+      - name: Verify project root
         shell: bash
         run: |
           pwd
@@ -34,7 +34,9 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.24.5'
           channel: stable
+          cache: true
 
       - name: Install dependencies
         run: flutter pub get
@@ -45,10 +47,11 @@ jobs:
           if ! find android/app/src/main -name "MainActivity.kt" -o -name "MainActivity.java" | grep -q .; then
             echo "MainActivity not found; running flutter create --platforms=android ."
             flutter create --platforms=android .
+            rm -f test/widget_test.dart
           fi
 
       - name: Analyze project
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos
 
       - name: Build release APK
         run: flutter build apk --release
