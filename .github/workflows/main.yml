@@ -11,7 +11,6 @@ jobs:
 
     defaults:
       run:
-        # Update 'android_flutter' to the folder containing pubspec.yaml, or '.' if pubspec.yaml is at the repo root
         working-directory: android_flutter
 
     steps:
@@ -41,14 +40,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Regenerate Android files if MainActivity is missing
+      - name: Regenerate clean Android project
         shell: bash
         run: |
-          if ! find android/app/src/main -name "MainActivity.kt" -o -name "MainActivity.java" | grep -q .; then
-            echo "MainActivity not found; running flutter create --platforms=android ."
-            flutter create --platforms=android .
-            rm -f test/widget_test.dart
-          fi
+          rm -rf android
+          flutter create --platforms=android --org com.kibur --project-name bingo_et .
+          rm -f test/widget_test.dart
 
       - name: Analyze project
         run: flutter analyze --no-fatal-infos
