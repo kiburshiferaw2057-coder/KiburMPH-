@@ -1,0 +1,23 @@
+name: bingo_et
+description: BINGO ET v3.0 - Finalized Flutter Client & Clarification Portal
+publish_to: 'none'
+version: 3.0.0+30
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  shared_preferences: ^2.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/logo.png
